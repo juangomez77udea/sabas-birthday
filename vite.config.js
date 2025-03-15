@@ -8,4 +8,13 @@ export default defineConfig({
     react(),
     tailwindcss()
   ],
+  assetsInclude: ["**/*.glb"],
+  resolve: {
+    alias: {
+      three: "three",
+    },
+  },
+  optimizeDeps: {
+    include: ["three"],
+  }
 })
