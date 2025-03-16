@@ -8,7 +8,7 @@ export default defineConfig({
     react(),
     tailwindcss()
   ],
-  assetsInclude: ["**/*.glb"],
+  assetsInclude: ["**/*.glb", "**/*.mp3"],
   resolve: {
     alias: {
       three: "three",
