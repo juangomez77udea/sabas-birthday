@@ -3,15 +3,14 @@ import Navbar from "./components/Navbar"
 import { Home, About, Goto } from "./pages"
 
 function App() {
-  
   return (
-    <main className=" bg-slate-300/20">
+    <main className="bg-slate-300/20 min-h-screen">
       <Router>
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
           <Route path="/go" element={<Goto />} />
+          <Route path="/about" element={<About />} />
         </Routes>
       </Router>
     </main>
@@ -19,3 +18,4 @@ function App() {
 }
 
 export default App
+
