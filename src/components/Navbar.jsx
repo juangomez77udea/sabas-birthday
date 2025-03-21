@@ -1,62 +1,62 @@
-"use client";
+"use client"
 
-import { useLocation, Link } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
-import cupheadMusic from "../assets/music/cuphead.mp3";
+import { useLocation, Link } from "react-router-dom"
+import { useState, useEffect, useRef } from "react"
+import cupheadMusic from "../assets/music/cuphead.mp3"
 
 const Navbar = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef(null);
-  const location = useLocation();
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [audioReady, setAudioReady] = useState(false)
+  const audioRef = useRef(null)
+  const location = useLocation()
 
+  // Inicializar el audio pero NO reproducirlo automáticamente
   useEffect(() => {
-    audioRef.current = new Audio(cupheadMusic);
-    audioRef.current.loop = true;
-    audioRef.current.volume = 0.5;
+    audioRef.current = new Audio(cupheadMusic)
+    audioRef.current.loop = true
+    audioRef.current.volume = 0.5
+    audioRef.current.load()
 
-    const playPromise = audioRef.current.play();
-    if (playPromise !== undefined) {
-      playPromise
-        .then(() => {
-          setIsPlaying(true);
-        })
-        .catch((error) => {
-          console.warn("Reproducción automática impedida:", error);
-          setIsPlaying(false);
-        });
+    // Marcar el audio como listo para reproducir
+    audioRef.current.oncanplaythrough = () => {
+      setAudioReady(true)
     }
 
     return () => {
       if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current = null;
+        audioRef.current.pause()
+        audioRef.current = null
       }
-    };
-  }, []);
+    }
+  }, [])
 
+  // Controlar la reproducción/pausa cuando cambia isPlaying
   useEffect(() => {
-    if (!audioRef.current) return;
+    if (!audioRef.current || !audioReady) return
 
     if (isPlaying) {
-      const playPromise = audioRef.current.play();
+      const playPromise = audioRef.current.play()
       if (playPromise !== undefined) {
         playPromise.catch((error) => {
-          console.warn("Error al reproducir música:", error);
-          setIsPlaying(false);
-        });
+          console.warn("Error al reproducir música:", error)
+          setIsPlaying(false)
+        })
       }
     } else {
-      audioRef.current.pause();
+      audioRef.current.pause()
     }
-  }, [isPlaying]);
+  }, [isPlaying, audioReady])
 
+  // Función para alternar reproducción/pausa
   const togglePlay = () => {
-    setIsPlaying((prev) => !prev);
-  };
+    // Esta función será llamada por interacción del usuario (clic en botón)
+    // lo que permitirá la reproducción de audio
+    setIsPlaying((prev) => !prev)
+  }
 
   const isActive = (path) => {
-    return location.pathname === path;
-  };
+    return location.pathname === path
+  }
 
   return (
     <header className="flex flex-col sm:flex-row justify-between items-center sm:px-16 px-8 py-4 max-w-5xl mx-auto absolute top-0 bg-transparent z-40 right-0 left-0">
@@ -101,7 +101,8 @@ const Navbar = () => {
         </button>
       </div>
     </header>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar
+
