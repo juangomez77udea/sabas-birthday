@@ -14,7 +14,7 @@ const Navbar = () => {
   useEffect(() => {
     audioRef.current = new Audio(cupheadMusic)
     audioRef.current.loop = true
-    audioRef.current.volume = 0.5
+    audioRef.current.volume = 0.3
     audioRef.current.load()
 
     // Marcar el audio como listo para reproducir
