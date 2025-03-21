@@ -22,7 +22,7 @@ const Home = () => {
         <ambientLight intensity={0.5} />
         <directionalLight position={[1, 1, 1]} intensity={1} castShadow />
         <Suspense fallback={null}>
-          <Boss position={[0, -2, 0]} scale={2.5} isRotating={isRotating} setIsRotating={setIsRotating} />
+          <Boss position={[0, -1, 0]} scale={1.0} isRotating={isRotating} setIsRotating={setIsRotating} />
           <Environment preset="studio" />
         </Suspense>
         <OrbitControls enableZoom={true} enablePan={true} enableRotate={!isRotating} minDistance={2} maxDistance={10} />
