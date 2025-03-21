@@ -1,83 +1,67 @@
-"use client"
+"use client";
 
-import { useLocation, Link } from "react-router-dom"
-import { useState, useEffect, useRef } from "react"
-import cupheadMusic from "../assets/music/cuphead.mp3"
+import { useLocation, Link } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import cupheadMusic from "../assets/music/cuphead.mp3";
 
 const Navbar = () => {
-  const [isPlaying, setIsPlaying] = useState(false)
-  const audioRef = useRef(null)
-  const location = useLocation()
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef(null);
+  const location = useLocation();
 
-  // Inicializar el audio cuando el componente se monta
   useEffect(() => {
-    audioRef.current = new Audio(cupheadMusic)
-    audioRef.current.loop = true
-    audioRef.current.volume = 0.5
+    audioRef.current = new Audio(cupheadMusic);
+    audioRef.current.loop = true;
+    audioRef.current.volume = 0.5;
 
-    // Intentar reproducir automáticamente
-    const playPromise = audioRef.current.play()
+    const playPromise = audioRef.current.play();
     if (playPromise !== undefined) {
       playPromise
         .then(() => {
-          setIsPlaying(true)
+          setIsPlaying(true);
         })
         .catch((error) => {
-          console.warn("Reproducción automática impedida:", error)
-          setIsPlaying(false)
-        })
+          console.warn("Reproducción automática impedida:", error);
+          setIsPlaying(false);
+        });
     }
 
-    // Limpieza al desmontar
     return () => {
       if (audioRef.current) {
-        audioRef.current.pause()
-        audioRef.current = null
+        audioRef.current.pause();
+        audioRef.current = null;
       }
-    }
-  }, [])
+    };
+  }, []);
 
-  // Manejar la reproducción/pausa cuando cambia isPlaying
   useEffect(() => {
-    if (!audioRef.current) return
+    if (!audioRef.current) return;
 
     if (isPlaying) {
-      const playPromise = audioRef.current.play()
+      const playPromise = audioRef.current.play();
       if (playPromise !== undefined) {
         playPromise.catch((error) => {
-          console.warn("Error al reproducir música:", error)
-          setIsPlaying(false)
-        })
+          console.warn("Error al reproducir música:", error);
+          setIsPlaying(false);
+        });
       }
     } else {
-      audioRef.current.pause()
+      audioRef.current.pause();
     }
-  }, [isPlaying])
+  }, [isPlaying]);
 
-  // Función para alternar entre reproducción y pausa
   const togglePlay = () => {
-    setIsPlaying((prev) => !prev)
-  }
+    setIsPlaying((prev) => !prev);
+  };
 
-  // Determinar qué enlace está activo basado en la ubicación actual
   const isActive = (path) => {
-    return location.pathname === path
-  }
-
-  // Añadimos un log para verificar la ubicación actual
-  console.log("Current location:", location.pathname)
-
-  // Función para manejar clics en los enlaces
-  const handleLinkClick = (path) => {
-    console.log(`Link clicked: ${path}`)
-  }
+    return location.pathname === path;
+  };
 
   return (
-    <header className="flex justify-between items-center sm:px-16 px-8 py-4 max-w-5xl mx-auto absolute top-0 bg-transparent z-40 right-0 left-0">
-      {/* Logo y enlaces */}
+    <header className="flex flex-col sm:flex-row justify-between items-center sm:px-16 px-8 py-4 max-w-5xl mx-auto absolute top-0 bg-transparent z-40 right-0 left-0">
       <Link
         to="/"
-        onClick={() => handleLinkClick("/")}
         className={`w-20 h-10 rounded-lg bg-white items-center justify-center flex font-bold shadow-md ${
           isActive("/") ? "ring-2 ring-blue-500" : ""
         }`}
@@ -85,10 +69,9 @@ const Navbar = () => {
         <p className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-indigo-600">Birthday</p>
       </Link>
 
-      <nav className="flex text-lg gap-7 font-medium">
+      <nav className="flex flex-col sm:flex-row text-lg gap-4 sm:gap-7 font-medium mt-4 sm:mt-0">
         <Link
           to="/about"
-          onClick={() => handleLinkClick("/about")}
           className={`w-40 h-10 rounded-lg bg-white items-center justify-center flex font-bold shadow-md ${
             isActive("/about") ? "text-blue-500 ring-2 ring-blue-500" : "text-black"
           }`}
@@ -98,7 +81,6 @@ const Navbar = () => {
 
         <Link
           to="/go"
-          onClick={() => handleLinkClick("/go")}
           className={`w-30 h-10 rounded-lg bg-white items-center justify-center flex font-bold shadow-md ${
             isActive("/go") ? "text-blue-500 ring-2 ring-blue-500" : "text-black"
           }`}
@@ -107,7 +89,6 @@ const Navbar = () => {
         </Link>
       </nav>
 
-      {/* Botón de música */}
       <div className="fixed bottom-5 right-5 z-50">
         <button
           onClick={togglePlay}
@@ -120,8 +101,7 @@ const Navbar = () => {
         </button>
       </div>
     </header>
-  )
-}
+  );
+};
 
-export default Navbar
-
+export default Navbar;

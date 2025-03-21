@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import { useState, Suspense } from "react"
-import { Canvas } from "@react-three/fiber"
-import { OrbitControls, Environment } from "@react-three/drei"
-import Boss from "../models/Boss"
-import BackgroundImage from "../assets/images/bg-sky2.jpeg"
+import { useState, Suspense } from "react";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, Environment } from "@react-three/drei";
+import Boss from "../models/Boss";
+import BackgroundImage from "../assets/images/bg-sky2.jpeg";
 
 const Home = () => {
-  const [isRotating, setIsRotating] = useState(false)
+  const [isRotating, setIsRotating] = useState(false);
 
   return (
     <div
@@ -18,7 +18,7 @@ const Home = () => {
         backgroundPosition: "center",
       }}
     >
-      <Canvas shadows camera={{ position: [0, 0, 5], fov: 45 }}>
+      <Canvas shadows camera={{ position: [0, 0, 5], fov: 45 }} style={{ width: "100%", height: "100%" }}>
         <ambientLight intensity={0.5} />
         <directionalLight position={[1, 1, 1]} intensity={1} castShadow />
         <Suspense fallback={null}>
@@ -28,8 +28,7 @@ const Home = () => {
         <OrbitControls enableZoom={true} enablePan={true} enableRotate={!isRotating} minDistance={2} maxDistance={10} />
       </Canvas>
     </div>
-  )
-}
+  );
+};
 
-export default Home
-
+export default Home;

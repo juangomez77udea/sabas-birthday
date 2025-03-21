@@ -1,26 +1,22 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import BackgroundImage from "../assets/images/country.jpg"
+import { useState } from "react";
+import BackgroundImage from "../assets/images/country.jpg";
 
 const Goto = () => {
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [attending, setAttending] = useState("yes")
-  const [submitted, setSubmitted] = useState(false)
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [attending, setAttending] = useState("yes");
+  const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log({ name, email, attending })
-    setSubmitted(true)
-  }
-
-  // Añadimos un log para verificar cuando se monta el componente
-  console.log("Goto component rendered")
+    e.preventDefault();
+    console.log({ name, email, attending });
+    setSubmitted(true);
+  };
 
   return (
     <div className="relative w-full min-h-screen overflow-hidden" style={{ pointerEvents: "auto" }}>
-      {/* Background with lower z-index */}
       <div
         className="absolute inset-0 w-full h-full z-0"
         style={{
@@ -30,8 +26,7 @@ const Goto = () => {
         }}
       />
 
-      {/* Content with higher z-index */}
-      <section className="relative z-10 flex lg:flex-row flex-col max-w-5xl mx-auto sm:p-16 pb-12 pt-[120px] px-8 min-h-[calc(100vh-80px)] w-full">
+      <section className="relative z-10 flex flex-col lg:flex-row max-w-5xl mx-auto sm:p-16 pb-12 pt-[120px] px-4 min-h-[calc(100vh-80px)] w-full">
         <div className="bg-white/90 p-8 rounded-lg shadow-xl w-full max-w-md mx-auto">
           <h1 className="sm:text-4xl text-3xl font-semibold mb-6 text-center font-poppins">¡Confirma tu asistencia!</h1>
 
@@ -109,8 +104,7 @@ const Goto = () => {
         </div>
       </section>
     </div>
-  )
-}
+  );
+};
 
-export default Goto
-
+export default Goto;

@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 const SimpleNav = () => {
   return (
-    <div className="fixed top-0 left-0 right-0 bg-white p-4 z-50 flex justify-center gap-4">
+    <div className="fixed top-0 left-0 right-0 bg-white p-4 z-50 flex flex-col sm:flex-row justify-center gap-4">
       <Link to="/" className="px-4 py-2 bg-blue-500 text-white rounded">
         Inicio
       </Link>
@@ -13,8 +13,7 @@ const SimpleNav = () => {
         Confirmar
       </Link>
     </div>
-  )
-}
+  );
+};
 
-export default SimpleNav
-
+export default SimpleNav;
