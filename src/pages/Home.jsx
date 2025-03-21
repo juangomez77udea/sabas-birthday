@@ -15,7 +15,7 @@ const Home = () => {
     <div
       className="w-full h-screen"
       style={{
-        backgroundImage: `url(${BackgroundImage})`,
+        // backgroundImage: `url(${BackgroundImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
