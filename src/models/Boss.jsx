@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-
 import { useRef, useState, useEffect, useCallback, useMemo } from "react";
 import { useGLTF, useAnimations, useProgress, Html } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
@@ -45,6 +44,7 @@ const Boss = ({ isRotating, setIsRotating, ...props }) => {
 
   const starRefs = useRef(starPositions.map(() => ({ x: 0, y: 0, speedX: 0, speedY: 0 })));
 
+  // Efecto para manejar las animaciones
   useEffect(() => {
     if (!actions || Object.keys(actions).length === 0) return;
 
@@ -69,6 +69,7 @@ const Boss = ({ isRotating, setIsRotating, ...props }) => {
     }
   }, [animationIndex, actions]);
 
+  // Manejadores de eventos para la rotación interactiva
   const handlePointerDown = useCallback(
     (e) => {
       e.stopPropagation();
@@ -139,6 +140,7 @@ const Boss = ({ isRotating, setIsRotating, ...props }) => {
     [setIsRotating],
   );
 
+  // Aplicar rotación y amortiguamiento en cada frame
   useFrame(() => {
     if (!group.current) return;
 
@@ -152,13 +154,14 @@ const Boss = ({ isRotating, setIsRotating, ...props }) => {
 
     if (mixer) {
       try {
-        mixer.update(0.016);
+        mixer.update(0.016); // Aproximadamente 60fps
       } catch (error) {
         console.warn("Error al actualizar mixer:", error);
       }
     }
   });
 
+  // Configurar event listeners
   useEffect(() => {
     const canvas = gl.domElement;
     canvas.addEventListener("pointerdown", handlePointerDown);
@@ -176,6 +179,7 @@ const Boss = ({ isRotating, setIsRotating, ...props }) => {
     };
   }, [gl, handlePointerDown, handlePointerUp, handlePointerMove, handleKeyDown, handleKeyUp]);
 
+  // Función de utilidad para verificar si un nodo existe
   const nodeExists = (nodeName) => {
     return nodes && nodes[nodeName] && nodes[nodeName].geometry;
   };
@@ -185,6 +189,7 @@ const Boss = ({ isRotating, setIsRotating, ...props }) => {
       <group name="Sketchfab_Scene">
         <group name="Sketchfab_model" rotation={[-Math.PI / 2, 0, 0]} scale={0.061}>
           <group name="Root">
+            {/* Luna - parte principal del modelo */}
             <group name="moon2" position={[4.782, 0, 12.34]} rotation={[3.129, 0.098, 0.001]} scale={[1.03, 1, 0.968]}>
               {[...Array(11)].map((_, i) => {
                 const nodeName = `moon2_0${i > 0 ? "_" + i : ""}`;
@@ -202,6 +207,7 @@ const Boss = ({ isRotating, setIsRotating, ...props }) => {
               })}
             </group>
 
+            {/* Cuphead y su hélice */}
             {nodeExists("cuphead_0") && (
               <group name="Cuphead_parent" position={[-19.837, 0.067, 12.004]} rotation={[0.006, 0, 0]}>
                 <group name="cuphead" position={[-0.024, -0.037, 0.027]} scale={0.14}>
@@ -234,6 +240,7 @@ const Boss = ({ isRotating, setIsRotating, ...props }) => {
               </group>
             )}
 
+            {/* Estrellas */}
             {nodeExists("star_0") &&
               starPositions.map((star, index) => (
                 <group
