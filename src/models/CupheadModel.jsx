@@ -1,95 +1,97 @@
 /* eslint-disable no-unused-vars */
-"use client"
+"use client";
 
-import { useRef, useEffect, useCallback } from "react"
-import { useGLTF } from "@react-three/drei"
-import { useFrame, useThree } from "@react-three/fiber"
-import { a } from "@react-spring/three"
+import { useRef, useEffect, useCallback } from "react";
+import { useGLTF } from "@react-three/drei";
+import { useFrame, useThree } from "@react-three/fiber";
+import { a } from "@react-spring/three";
 
-// Importamos el modelo directamente
-// Nota: Asegúrate de que este archivo esté en la carpeta correcta
-import modelPath from "../assets/3d/cuphead__mugman.glb"
+import modelPath from "../assets/3d/cuphead__mugman.glb";
 
-const CupheadModel = ({ isRotating, setIsRotating, ...props }) => {
-  const group = useRef()
-  const { nodes, materials } = useGLTF(modelPath)
-  const { viewport } = useThree()
+const CupheadModel = ({ isRotating, setIsRotating, onRotationChange, ...props }) => {
+  const group = useRef();
+  const { nodes, materials } = useGLTF(modelPath);
+  const { viewport } = useThree();
 
-  // Referencias para la rotación
-  const lastX = useRef(0)
-  const rotationSpeed = useRef(0)
-  const dampingFactor = 0.95
+  const lastX = useRef(0);
+  const rotationSpeed = useRef(0);
+  const dampingFactor = 0.95;
 
-  // Manejadores de eventos para la interacción
   const handlePointerDown = useCallback(
     (e) => {
-      e.stopPropagation()
-      e.preventDefault()
-      setIsRotating(true)
+      e.stopPropagation();
+      e.preventDefault();
+      setIsRotating(true);
 
-      const clientX = e.touches ? e.touches[0].clientX : e.clientX
-      lastX.current = clientX
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      lastX.current = clientX;
     },
     [setIsRotating],
-  )
+  );
 
   const handlePointerUp = useCallback(
     (e) => {
-      e.stopPropagation()
-      e.preventDefault()
-      setIsRotating(false)
+      e.stopPropagation();
+      e.preventDefault();
+      setIsRotating(false);
     },
     [setIsRotating],
-  )
+  );
 
   const handlePointerMove = useCallback(
     (e) => {
-      e.stopPropagation()
-      e.preventDefault()
+      e.stopPropagation();
+      e.preventDefault();
 
       if (isRotating) {
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX
-        const delta = (clientX - lastX.current) / viewport.width
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const delta = (clientX - lastX.current) / viewport.width;
 
-        group.current.rotation.y += delta * 0.01 * Math.PI
-        lastX.current = clientX
-        rotationSpeed.current = delta * 0.01 * Math.PI
+        group.current.rotation.y += delta * 0.01 * Math.PI;
+        lastX.current = clientX;
+        rotationSpeed.current = delta * 0.01 * Math.PI;
+
+        // Notificar el cambio de rotación
+        if (onRotationChange) {
+          onRotationChange(group.current.rotation.y);
+        }
       }
     },
-    [isRotating, viewport.width],
-  )
+    [isRotating, viewport.width, onRotationChange],
+  );
 
-  // Animación de rotación continua
   useFrame(() => {
     if (!isRotating) {
-      // Aplicar amortiguación a la velocidad de rotación
-      rotationSpeed.current *= dampingFactor
+      rotationSpeed.current *= dampingFactor;
 
-      // Detener la rotación cuando la velocidad es muy baja
+
       if (Math.abs(rotationSpeed.current) < 0.001) {
-        rotationSpeed.current = 0
+        rotationSpeed.current = 0;
       }
 
-      // Aplicar la rotación
-      group.current.rotation.y += rotationSpeed.current
+      group.current.rotation.y += rotationSpeed.current;
+
+      // Notificar el cambio de rotación durante la rotación continua
+      if (onRotationChange) {
+        onRotationChange(group.current.rotation.y);
+      }
     }
-  })
+  });
 
-  // Configurar los event listeners
   useEffect(() => {
-    const canvas = document.querySelector("canvas")
-    if (!canvas) return
+    const canvas = document.querySelector("canvas");
+    if (!canvas) return;
 
-    canvas.addEventListener("pointerdown", handlePointerDown)
-    canvas.addEventListener("pointerup", handlePointerUp)
-    canvas.addEventListener("pointermove", handlePointerMove)
+    canvas.addEventListener("pointerdown", handlePointerDown);
+    canvas.addEventListener("pointerup", handlePointerUp);
+    canvas.addEventListener("pointermove", handlePointerMove);
 
     return () => {
-      canvas.removeEventListener("pointerdown", handlePointerDown)
-      canvas.removeEventListener("pointerup", handlePointerUp)
-      canvas.removeEventListener("pointermove", handlePointerMove)
-    }
-  }, [handlePointerDown, handlePointerUp, handlePointerMove])
+      canvas.removeEventListener("pointerdown", handlePointerDown);
+      canvas.removeEventListener("pointerup", handlePointerUp);
+      canvas.removeEventListener("pointermove", handlePointerMove);
+    };
+  }, [handlePointerDown, handlePointerUp, handlePointerMove]);
 
   return (
     <a.group ref={group} {...props} dispose={null}>
