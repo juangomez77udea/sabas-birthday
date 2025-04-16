@@ -1,62 +1,16 @@
-"use client"
-
 import { useLocation, Link } from "react-router-dom"
-import { useState, useEffect, useRef } from "react"
-import cupheadMusic from "../assets/music/cuphead.mp3"
+import { useState, useEffect } from "react"
+import { useAudio } from "../context/AudioContext"
 
 const Navbar = () => {
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [audioReady, setAudioReady] = useState(false)
+  const { isPlaying, togglePlay } = useAudio()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const audioRef = useRef(null)
   const location = useLocation()
-
-  // Inicializar el audio pero NO reproducirlo automáticamente
-  useEffect(() => {
-    audioRef.current = new Audio(cupheadMusic)
-    audioRef.current.loop = true
-    audioRef.current.volume = 0.3
-    audioRef.current.load()
-
-    // Marcar el audio como listo para reproducir
-    audioRef.current.oncanplaythrough = () => {
-      setAudioReady(true)
-    }
-
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.pause()
-        audioRef.current = null
-      }
-    }
-  }, [])
-
-  // Controlar la reproducción/pausa cuando cambia isPlaying
-  useEffect(() => {
-    if (!audioRef.current || !audioReady) return
-
-    if (isPlaying) {
-      const playPromise = audioRef.current.play()
-      if (playPromise !== undefined) {
-        playPromise.catch((error) => {
-          console.warn("Error al reproducir música:", error)
-          setIsPlaying(false)
-        })
-      }
-    } else {
-      audioRef.current.pause()
-    }
-  }, [isPlaying, audioReady])
 
   // Cerrar el menú móvil cuando se cambia de ruta
   useEffect(() => {
     setIsMenuOpen(false)
   }, [location])
-
-  // Función para alternar reproducción/pausa
-  const togglePlay = () => {
-    setIsPlaying((prev) => !prev)
-  }
 
   // Función para alternar el menú móvil
   const toggleMenu = () => {
@@ -207,4 +161,3 @@ const Navbar = () => {
 }
 
 export default Navbar
-

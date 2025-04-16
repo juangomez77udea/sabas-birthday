@@ -1,20 +1,23 @@
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import { Home, About, Goto } from "./pages";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import Navbar from "./components/Navbar"
+import Home from "./pages/Home"
+import About from "./pages/About"
+import Goto from "./pages/Goto"
+import { AudioProvider } from "./context/AudioContext"
 
-function App() {
+const App = () => {
   return (
-    <main className="bg-slate-300/20 min-h-screen w-full">
+    <AudioProvider>
       <Router>
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/go" element={<Goto />} />
           <Route path="/about" element={<About />} />
+          <Route path="/go" element={<Goto />} />
         </Routes>
       </Router>
-    </main>
-  );
+    </AudioProvider>
+  )
 }
 
-export default App;
+export default App
