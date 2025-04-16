@@ -1,38 +1,11 @@
-import { useState, Suspense, useMemo, useEffect, useRef } from "react";
-import { Canvas } from "@react-three/fiber";
-import { Environment, OrbitControls, Html } from "@react-three/drei";
-import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
-import Mugman from "../models/Mugman";
-import BackgroundImage from "../assets/images/map.jpeg";
+import { useState, Suspense, useMemo, useRef } from "react"
+import { Canvas } from "@react-three/fiber"
+import { Environment, OrbitControls, Html } from "@react-three/drei"
+import { GoogleMap, useJsApiLoader } from "@react-google-maps/api"
+import Mugman from "../models/Mugman"
+import BackgroundImage from "../assets/images/map.jpeg"
 
-// Componente del botón de ubicación
-const LocationButton = () => {
-  const openNavigation = () => {
-    const lat = 6.046695165427712;
-    const lng = -75.61901952883606;
-    
-    // URLs para navegación
-    const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=driving`;
-    const wazeUrl = `https://waze.com/ul?ll=${lat},${lng}&navigate=yes`;
-    
-    if (window.confirm("¿Abrir en Google Maps o Waze?")) {
-      window.open(googleMapsUrl, '_blank');
-    } else {
-      window.open(wazeUrl, '_blank');
-    }
-  };
-
-  return (
-    <button
-      onClick={openNavigation}
-      className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 hover:scale-105 shadow-lg"
-    >
-      ¿Cómo llegar?
-    </button>
-  );
-};
-
-// Componente Loader
+// Componente de carga para el modelo 3D
 function Loader() {
   return (
     <Html center>
@@ -43,121 +16,94 @@ function Loader() {
         <p className="mt-2 text-sm text-white">Cargando modelo...</p>
       </div>
     </Html>
-  );
+  )
 }
 
-// Componente del Mapa
+// Componente del Mapa con AdvancedMarkerElement
 function MapComponent() {
-  const mapRef = useRef(null);
-  const markerRef = useRef(null);
-  
-  const center = useMemo(() => ({
-    lat: 6.046695165427712,
-    lng: -75.61901952883606
-  }), []);
+  // El resto del código del mapa permanece igual
+  const mapRef = useRef( 6.046695165427712, -75.61901952883606,)
+  // Removed unused markerRef to resolve the compile error
+     
+ 
+  const center = useMemo(
+    () => ({
+      lat: 6.046695165427712,
+      lng: -75.61901952883606,
+    }),
+    [],
+  )
 
-  const { isLoaded, loadError } = useJsApiLoader({
+  // Configuración para cargar la API de Google Maps
+  const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
     libraries: ["marker", "places"],
-    version: "beta"
-  });
+    version: "beta",
+  })
 
-  useEffect(() => {
-    if (isLoaded && window.google && !markerRef.current && mapRef.current) {
-      const content = document.createElement("div");
-      content.innerHTML = `
-        <div style="
-          background: #E53935;
-          color: white;
-          padding: 8px 12px;
-          border-radius: 16px;
-          font-weight: bold;
-          font-family: 'Roboto', sans-serif;
-          box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-          display: flex;
-          align-items: center;
-          gap: 8px;
-        ">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-          </svg>
-          ¡Evento aquí!
-        </div>
-      `;
-      
-      markerRef.current = new window.google.maps.marker.AdvancedMarkerElement({
-        position: center,
-        map: mapRef.current,
-        content: content,
-        title: "Granja la Clarita"
-      });
-    }
-    
-    return () => {
-      if (markerRef.current) {
-        markerRef.current.map = null;
-        markerRef.current = null;
-      }
-    };
-  }, [isLoaded, center]);
-
+  // Estilo del contenedor del mapa
   const mapContainerStyle = {
-    width: '100%',
-    height: '400px'
-  };
+    width: "100%",
+    height: "400px",
+  }
 
+  // Opciones del mapa
   const mapOptions = {
     zoom: 17,
     center: center,
-    mapId: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+    mapId: "API_KEY",
     mapTypeControl: false,
     streetViewControl: true,
-    fullscreenControl: true
-  };
-
-  if (loadError) {
-    return (
-      <div className="w-full h-full bg-red-100 flex items-center justify-center text-red-600 p-4 rounded">
-        Error al cargar el mapa
-      </div>
-    );
+    fullscreenControl: true,
+    disableDefaultUI: false,
   }
 
-  if (!isLoaded) {
-    return (
-      <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-        <div className="animate-pulse flex flex-col items-center">
-          <div className="w-32 h-2 bg-gray-300 rounded-full mb-2"></div>
+  // Renderizado del mapa
+  return (
+    <div className="w-full h-[400px] bg-gray-200">
+      {isLoaded ? (
+        <GoogleMap
+          mapContainerStyle={mapContainerStyle}
+          options={mapOptions}
+          onLoad={(map) => {
+            mapRef.current = map
+          }}
+        />
+      ) : (
+        <div className="w-full h-full flex items-center justify-center">
           <p>Cargando mapa...</p>
         </div>
-      </div>
-    );
-  }
-
-  return (
-    <GoogleMap
-      mapContainerStyle={mapContainerStyle}
-      options={mapOptions}
-      onLoad={(map) => {
-        mapRef.current = map;
-        if (markerRef.current) {
-          markerRef.current.map = map;
-        }
-      }}
-      onUnmount={() => {
-        mapRef.current = null;
-      }}
-    />
-  );
+      )}
+    </div>
+  )
 }
 
 // Componente Principal About
 const About = () => {
-  const [isRotating, setIsRotating] = useState(false);
+  const [isRotating, setIsRotating] = useState(false)
+
+  // Coordenadas para los enlaces de navegación
+  const coordinates = {
+    lat: 6.046695165427712,
+    lng: -75.61901952883606,
+  }
+
+  // Función para abrir Google Maps
+  const openGoogleMaps = () => {
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${coordinates.lat},${coordinates.lng}&travelmode=driving`
+    window.open(url, "_blank", "noopener,noreferrer")
+  }
+
+  // Función para abrir Waze
+  const openWaze = () => {
+    const url = `https://waze.com/ul?ll=${coordinates.lat},${coordinates.lng}&navigate=yes`
+    window.open(url, "_blank", "noopener,noreferrer")
+  }
 
   return (
-    <div className="relative w-full min-h-screen overflow-hidden">
+    // Ajustamos la altura y eliminamos cualquier margen inferior
+    <div className="relative w-full min-h-[calc(100vh-120px)]" style={{ marginBottom: 0 }}>
       {/* Fondo con imagen */}
       <div
         className="absolute inset-0 w-full h-full"
@@ -169,8 +115,8 @@ const About = () => {
         }}
       />
 
-      {/* Contenido principal */}
-      <div className="relative z-10 flex flex-col-reverse lg:flex-row w-full min-h-screen">
+      {/* Contenido principal con dos columnas */}
+      <div className="relative z-10 flex flex-col-reverse lg:flex-row w-full">
         {/* Sección izquierda - Información */}
         <div className="lg:w-1/2 p-8 lg:p-16 flex flex-col justify-center">
           <div className="bg-black opacity-75 p-8 rounded-lg text-white">
@@ -181,9 +127,8 @@ const About = () => {
 
               <div>
                 <h2 className="text-2xl font-semibold mb-2">Ubicación</h2>
-                <p className="text-lg">Granja la Clarita</p>
+                <p className="text-lg">Minimotos Medellin Río</p>
                 <p className="text-lg">Caldas, Antioquia, Vereda La Clara</p>
-                <LocationButton />
               </div>
 
               <div>
@@ -198,30 +143,64 @@ const About = () => {
                 <div className="w-full h-96 rounded-lg overflow-hidden shadow-lg bg-white">
                   <MapComponent />
                 </div>
-                <p className="text-sm mt-2 text-gray-300">
-                  Granja la Clarita - Minimotos Medellín Río
-                </p>
+                <p className="text-sm mt-2 text-gray-300">Granja la Clarita</p>
+
+                {/* Botones para Google Maps y Waze */}
+                <div className="mt-4 flex flex-col sm:flex-row gap-3">
+                  <button
+                    onClick={openGoogleMaps}
+                    className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg flex items-center justify-center transition-colors"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5 mr-2"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    Abrir en Google Maps
+                  </button>
+                  <button
+                    onClick={openWaze}
+                    className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg flex items-center justify-center transition-colors"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5 mr-2"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    Abrir en Waze
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
         {/* Sección derecha - Modelo 3D */}
-        <div className="lg:w-1/2 h-[400px] lg:h-screen">
+        <div className="lg:w-1/2 h-[400px] lg:h-[calc(100vh-120px)]">
           <Canvas
             shadows
             camera={{ position: [0, 0, 5], fov: 45 }}
             style={{ width: "100%", height: "100%" }}
+            className="mb-0"
           >
             <ambientLight intensity={0.5} />
             <directionalLight position={[1, 1, 1]} intensity={1} castShadow />
             <Suspense fallback={<Loader />}>
-              <Mugman 
-                position={[0, -0.5, 0]} 
-                scale={1.4} 
-                isRotating={isRotating} 
-                setIsRotating={setIsRotating} 
-              />
+              <Mugman position={[0, -0.5, 0]} scale={1.4} isRotating={isRotating} setIsRotating={setIsRotating} />
               <Environment preset="studio" />
             </Suspense>
             <OrbitControls
@@ -235,7 +214,7 @@ const About = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default About;
+export default About

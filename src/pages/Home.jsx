@@ -1,6 +1,4 @@
-"use client"
-
-import { useState, Suspense, useEffect } from "react"
+import { useState, Suspense } from "react"
 import { Canvas } from "@react-three/fiber"
 import { OrbitControls, Environment } from "@react-three/drei"
 import CupheadModel from "../models/CupheadModel"
@@ -13,12 +11,6 @@ const Home = () => {
   const [isRotating, setIsRotating] = useState(false)
   const [currentStage, setCurrentStage] = useState(1)
   const [gifSize] = useState(200) // Tamaño inicial del GIF en px
-
-  // Función para cambiar manualmente el stage (para pruebas)
-  useEffect(() => {
-    // Descomenta esta línea para probar directamente el stage 3
-    // setCurrentStage(3);
-  }, [])
 
   const handleRotationChange = (rotationY) => {
     const normalizedRotation = ((rotationY % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI)
@@ -34,14 +26,15 @@ const Home = () => {
 
   return (
     <div
-      className="w-full h-screen absolute inset-0 bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-500"
+      className="w-full h-[calc(100vh-60px)] relative bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-500"
       style={{
         backgroundSize: "cover",
         backgroundPosition: "center",
         filter: "brightness(0.8)",
+        marginBottom: 0,
       }}
     >
-      {/* Contenedor del GIF - Ahora condicionado por isPlaying */}
+      {/* Contenedor del GIF - condicionado por isPlaying */}
       {isPlaying && (
         <div
           className="absolute bottom-4 right-4 z-10 transition-all duration-500 ease-in-out"
@@ -69,8 +62,8 @@ const Home = () => {
 
       {/* Contenedor del mensaje */}
       <div
-        className="absolute top-28 left-0 right-0 flex items-center justify-center z-10"
-        style={{ pointerEvents: "auto" }} // Cambiado a "auto" para permitir clics
+        className="absolute top-15 left-0 right-0 flex items-center justify-center z-10"
+        style={{ pointerEvents: "auto" }}
       >
         {currentStage && <HomeInfo currentStage={currentStage} />}
       </div>
@@ -81,7 +74,7 @@ const Home = () => {
         <directionalLight position={[1, 1, 1]} intensity={1} castShadow />
         <Suspense fallback={null}>
           <CupheadModel
-            position={[0, -1, 0]}
+            position={[0, -1.5, 0]}
             scale={0.2}
             isRotating={isRotating}
             setIsRotating={setIsRotating}

@@ -69,7 +69,7 @@ const Goto = () => {
   }
 
   return (
-    <div className="relative w-full min-h-screen overflow-hidden" style={{ pointerEvents: "auto" }}>
+    <div className="relative w-full min-h-[calc(100vh-100px)]" style={{ pointerEvents: "auto", marginBottom: 0 }}>
       <div
         className="absolute inset-0 w-full h-full z-0"
         style={{
@@ -79,8 +79,8 @@ const Goto = () => {
         }}
       />
 
-      <section className="relative z-10 flex flex-col lg:flex-row max-w-5xl mx-auto sm:p-16 pb-12 pt-[120px] px-4 min-h-[calc(100vh-80px)] w-full">
-        <div className="bg-white/90 opacity-85 p-8 rounded-lg shadow-xl w-full max-w-md mx-auto">
+      <section className="relative z-10 flex flex-col lg:flex-row max-w-5xl mx-auto sm:p-16 pb-0 pt-[60px] px-4 w-full">
+        <div className="bg-white/90 opacity-85 p-8 rounded-lg shadow-xl w-full max-w-md mx-auto mb-0">
           <h1 className="sm:text-4xl text-3xl font-semibold mb-6 text-center font-poppins">¡Confirma tu asistencia!</h1>
 
           {submitted ? (
@@ -93,6 +93,7 @@ const Goto = () => {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* El resto del formulario permanece igual */}
               <div className="space-y-4">
                 {attendees.map((attendee, index) => (
                   <div key={attendee.id} className="p-4 border border-gray-200 rounded-lg bg-white">
@@ -193,7 +194,9 @@ const Goto = () => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className={`w-full bg-gradient-to-r from-yellow-400 to-indigo-600 text-white py-2 px-4 rounded-md hover:opacity-90 transition-opacity font-medium flex items-center justify-center ${isLoading ? "opacity-70 cursor-not-allowed" : ""}`}
+                className={`w-full bg-gradient-to-r from-yellow-400 to-indigo-600 text-white py-2 px-4 rounded-md hover:opacity-90 transition-opacity font-medium flex items-center justify-center ${
+                  isLoading ? "opacity-70 cursor-not-allowed" : ""
+                }`}
               >
                 {isLoading ? (
                   <>
