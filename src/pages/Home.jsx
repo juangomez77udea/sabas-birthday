@@ -1,4 +1,6 @@
-import { useState, Suspense } from "react"
+"use client"
+
+import { useState, Suspense, useEffect } from "react"
 import { Canvas } from "@react-three/fiber"
 import { OrbitControls, Environment } from "@react-three/drei"
 import CupheadModel from "../models/CupheadModel"
@@ -12,6 +14,12 @@ const Home = () => {
   const [currentStage, setCurrentStage] = useState(1)
   const [gifSize] = useState(200) // Tamaño inicial del GIF en px
 
+  // Función para cambiar manualmente el stage (para pruebas)
+  useEffect(() => {
+    // Descomenta esta línea para probar directamente el stage 3
+    // setCurrentStage(3);
+  }, [])
+
   const handleRotationChange = (rotationY) => {
     const normalizedRotation = ((rotationY % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI)
 
@@ -23,9 +31,6 @@ const Home = () => {
       setCurrentStage(3)
     }
   }
-
-  // Función para cambiar el tamaño del GIF
-  // (Removed because it is unused)
 
   return (
     <div
@@ -65,7 +70,7 @@ const Home = () => {
       {/* Contenedor del mensaje */}
       <div
         className="absolute top-28 left-0 right-0 flex items-center justify-center z-10"
-        style={{ pointerEvents: "none" }}
+        style={{ pointerEvents: "auto" }} // Cambiado a "auto" para permitir clics
       >
         {currentStage && <HomeInfo currentStage={currentStage} />}
       </div>

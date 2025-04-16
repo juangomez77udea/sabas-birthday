@@ -46,7 +46,7 @@ const Navbar = () => {
                 isActive("/about") ? "text-blue-500 ring-2 ring-blue-500" : "text-black"
               }`}
             >
-              <p className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-indigo-600">
+              <p className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-indigo-600">
                 ¿Cómo llegar?
               </p>
             </Link>
@@ -57,7 +57,7 @@ const Navbar = () => {
                 isActive("/go") ? "text-blue-500 ring-2 ring-blue-500" : "text-black"
               }`}
             >
-              <p className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-indigo-600">Confirmar</p>
+              <p className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-indigo-600">Confirmar</p>
             </Link>
           </nav>
 

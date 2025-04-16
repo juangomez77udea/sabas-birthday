@@ -7,8 +7,8 @@ emailjs.init("-OsygP1HpxgWAYGK2");
 export const sendEmail = async (templateParams) => {
   try {
     const response = await emailjs.send(
-      'service_qudjnlr',     // ID del servicio que creaste en el paso 2
-      'template_9ox6nf3',    // ID de la plantilla que creaste en el paso 3
+      import.meta.env.VITE_EMAILJS_SERVICE_ID,     // ID del servicio que creaste en el paso 2
+      import.meta.env.VITE_EMAILJS_TEMPLATE_ID,    // ID de la plantilla que creaste en el paso 3
       templateParams       // Parámetros que pasas desde el componente
     );
     

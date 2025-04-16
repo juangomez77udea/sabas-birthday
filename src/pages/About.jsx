@@ -5,9 +5,34 @@ import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import Mugman from "../models/Mugman";
 import BackgroundImage from "../assets/images/map.jpeg";
 
+// Componente del botón de ubicación
+const LocationButton = () => {
+  const openNavigation = () => {
+    const lat = 6.046695165427712;
+    const lng = -75.61901952883606;
+    
+    // URLs para navegación
+    const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=driving`;
+    const wazeUrl = `https://waze.com/ul?ll=${lat},${lng}&navigate=yes`;
+    
+    if (window.confirm("¿Abrir en Google Maps o Waze?")) {
+      window.open(googleMapsUrl, '_blank');
+    } else {
+      window.open(wazeUrl, '_blank');
+    }
+  };
 
+  return (
+    <button
+      onClick={openNavigation}
+      className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 hover:scale-105 shadow-lg"
+    >
+      ¿Cómo llegar?
+    </button>
+  );
+};
 
-// Componente de carga para el modelo 3D
+// Componente Loader
 function Loader() {
   return (
     <Html center>
@@ -21,29 +46,25 @@ function Loader() {
   );
 }
 
-// Componente del Mapa con AdvancedMarkerElement
+// Componente del Mapa
 function MapComponent() {
   const mapRef = useRef(null);
   const markerRef = useRef(null);
   
-  // Coordenadas del lugar (Parque Lleras, Medellín)
   const center = useMemo(() => ({
-    lat: 6.15587,
-    lng: -75.56606
+    lat: 6.046695165427712,
+    lng: -75.61901952883606
   }), []);
 
-  // Configuración para cargar la API de Google Maps
   const { isLoaded, loadError } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
-    libraries: ["marker", "places"], // Asegúrate de incluir "marker"
-    version: "beta" // Necesario para Advanced Markers
+    libraries: ["marker", "places"],
+    version: "beta"
   });
 
-  // Efecto para crear el marcador cuando el mapa esté cargado
   useEffect(() => {
     if (isLoaded && window.google && !markerRef.current && mapRef.current) {
-      // Crear elemento HTML personalizado para el marcador
       const content = document.createElement("div");
       content.innerHTML = `
         <div style="
@@ -65,16 +86,14 @@ function MapComponent() {
         </div>
       `;
       
-      // Crear el Advanced Marker
       markerRef.current = new window.google.maps.marker.AdvancedMarkerElement({
         position: center,
         map: mapRef.current,
         content: content,
-        title: "Ubicación del Evento"
+        title: "Granja la Clarita"
       });
     }
     
-    // Limpieza al desmontar el componente
     return () => {
       if (markerRef.current) {
         markerRef.current.map = null;
@@ -83,41 +102,28 @@ function MapComponent() {
     };
   }, [isLoaded, center]);
 
-  // Estilo del contenedor del mapa
   const mapContainerStyle = {
     width: '100%',
     height: '400px'
   };
 
-  const API_KEY=import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-
-  // Opciones del mapa (IMPORTANTE: incluir mapId)
   const mapOptions = {
     zoom: 17,
     center: center,
-    mapId: "API_KEY",
+    mapId: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
     mapTypeControl: false,
     streetViewControl: true,
-    fullscreenControl: true,
-    disableDefaultUI: false
+    fullscreenControl: true
   };
 
-  // Manejo de errores
   if (loadError) {
     return (
       <div className="w-full h-full bg-red-100 flex items-center justify-center text-red-600 p-4 rounded">
-        Error al cargar el mapa. Por favor, verifica:
-        <ul className="list-disc pl-5 mt-2">
-          <li>Tu conexión a internet</li>
-          <li>Que la clave de API sea válida</li>
-          <li>Que tengas habilitado "Maps JavaScript API"</li>
-          <li>Que hayas creado un Map ID en Google Cloud Console</li>
-        </ul>
+        Error al cargar el mapa
       </div>
     );
   }
 
-  // Estado de carga
   if (!isLoaded) {
     return (
       <div className="w-full h-full bg-gray-200 flex items-center justify-center">
@@ -129,7 +135,6 @@ function MapComponent() {
     );
   }
 
-  // Renderizado del mapa
   return (
     <GoogleMap
       mapContainerStyle={mapContainerStyle}
@@ -164,7 +169,7 @@ const About = () => {
         }}
       />
 
-      {/* Contenido principal con dos columnas */}
+      {/* Contenido principal */}
       <div className="relative z-10 flex flex-col-reverse lg:flex-row w-full min-h-screen">
         {/* Sección izquierda - Información */}
         <div className="lg:w-1/2 p-8 lg:p-16 flex flex-col justify-center">
@@ -175,9 +180,10 @@ const About = () => {
               <p className="text-lg">Aquí encontrarás información sobre cómo llegar a la fiesta.</p>
 
               <div>
-                <h2 className="text-2xl font-semibold mb-2">Dirección</h2>
-                <p className="text-lg">Parque Lleras, El Poblado</p>
-                <p className="text-lg">Medellín, Antioquia, Colombia</p>
+                <h2 className="text-2xl font-semibold mb-2">Ubicación</h2>
+                <p className="text-lg">Granja la Clarita</p>
+                <p className="text-lg">Caldas, Antioquia, Vereda La Clara</p>
+                <LocationButton />
               </div>
 
               <div>
@@ -193,7 +199,7 @@ const About = () => {
                   <MapComponent />
                 </div>
                 <p className="text-sm mt-2 text-gray-300">
-                  Ubicación exacta del evento en Parque Lleras, Medellín.
+                  Granja la Clarita - Minimotos Medellín Río
                 </p>
               </div>
             </div>
@@ -206,7 +212,6 @@ const About = () => {
             shadows
             camera={{ position: [0, 0, 5], fov: 45 }}
             style={{ width: "100%", height: "100%" }}
-            className="mb-8 lg:mb-0"
           >
             <ambientLight intensity={0.5} />
             <directionalLight position={[1, 1, 1]} intensity={1} castShadow />
