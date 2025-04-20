@@ -1,4 +1,4 @@
-import { useState, Suspense } from "react"
+import { useState, Suspense, useEffect } from "react"
 import { Canvas } from "@react-three/fiber"
 import { OrbitControls, Environment } from "@react-three/drei"
 import CupheadModel from "../models/CupheadModel"
@@ -10,7 +10,18 @@ const Home = () => {
   const { isPlaying } = useAudio()
   const [isRotating, setIsRotating] = useState(false)
   const [currentStage, setCurrentStage] = useState(1)
-  const [gifSize] = useState(200) // Tamaño inicial del GIF en px
+  const [gifSize] = useState(200)
+  const [showMessage, setShowMessage] = useState(true)
+
+
+   // Efecto para ocultar el mensaje después de 5 segundos
+   useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowMessage(false)
+    }, 5000)
+
+    return () => clearTimeout(timer) // Limpia el timer al desmontar el componente
+  }, [])
 
   const handleRotationChange = (rotationY) => {
     const normalizedRotation = ((rotationY % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI)
@@ -34,6 +45,15 @@ const Home = () => {
         marginBottom: 0,
       }}
     >
+      {/* Mensaje temporal */}
+      {showMessage && (
+        <div className="absolute top-60 left-0 right-0 flex justify-center z-20">
+          <div className=" font-bold bg-white bg-opacity-90 text-blue-800 font-marker px-4 py-2 rounded-lg shadow-lg animate-fade-in-out">
+            Puedes girar a los hermanos Cuphead. ¡Intenta girarlos!
+          </div>
+        </div>
+      )}
+
       {/* Contenedor del GIF - condicionado por isPlaying */}
       {isPlaying && (
         <div
