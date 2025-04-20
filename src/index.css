@@ -1,1 +1,13 @@
 @import "tailwindcss";
+
+.font-ubuntu {
+  font-family: 'Ubuntu', sans-serif;
+}
+
+.font-marker {
+  font-family: 'Permanent Marker', cursive;
+}
+
+body {
+  font-family: 'Ubuntu', sans-serif;
+}

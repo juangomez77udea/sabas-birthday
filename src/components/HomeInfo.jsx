@@ -20,15 +20,16 @@ const InfoBox = ({ text, link, btnText }) => {
 
 const renderContent = {
   1: (
-    <h1 className="sm:text-xl sm:leading-snug text-center bg-blue-700 relative border rounded-lg border-blue-700 py-4 px-8 shadow-[0.6vmin_0.6vmin_#336cc1,1vmin_1vmin_#0092db,1vmin_1vmin_#0092db,0.65vmin_1vmin_#0092db,1vmin_0.65vmin_#0092db] p-6 text-white mx-5">
+    <h1 className=" font-marker sm:text-xl sm:leading-snug text-center bg-blue-700 relative border rounded-lg border-blue-700 py-4 px-8 shadow-[0.6vmin_0.6vmin_#336cc1,1vmin_1vmin_#0092db,1vmin_1vmin_#0092db,0.65vmin_1vmin_#0092db,1vmin_0.65vmin_#0092db] p-6 text-white mx-5">
       Hola, soy <span className="font-semibold">Sebastian</span> 👋
       <br />🎉 !Y quiero invitarte a celebrar conmigo mi cumpleaños número 9 ¡ 🎉
     </h1>
   ),
-  2:  <h1 className=" sm:text-xl sm:leading-snug text-center bg-blue-700 relative border rounded-lg border-blue-700 py-4 px-8 shadow-[0.6vmin_0.6vmin_#336cc1,1vmin_1vmin_#0092db,1vmin_1vmin_#0092db,0.65vmin_1vmin_#0092db,1vmin_0.65vmin_#0092db] p-6 text-white mx-5">"Recuerda <span className=" font-semibold">llevar ropa de cambio</span>, para nuestra aventura."</h1> ,
+  2:  <h1 className=" font-marker sm:text-xl sm:leading-snug text-center bg-blue-700 relative border rounded-lg border-blue-700 py-4 px-8 shadow-[0.6vmin_0.6vmin_#336cc1,1vmin_1vmin_#0092db,1vmin_1vmin_#0092db,0.65vmin_1vmin_#0092db,1vmin_0.65vmin_#0092db] p-6 text-white mx-5">"Recuerda <span className=" font-semibold">llevar ropa de cambio</span>, para nuestra aventura."</h1> ,
   3: (
-    // Usamos el nuevo componente ExternalLink para el caso 3
+    
     <ExternalLink
+      className=" font-marker"
       text="¡Mira cómo es el lugar donde celebraremos mi cumpleaños!"
       url="https://www.instagram.com/minimotosmedellinrio?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
       btnText="¿Quieres ver el lugar?"
