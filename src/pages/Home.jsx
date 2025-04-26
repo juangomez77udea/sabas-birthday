@@ -49,7 +49,7 @@ const Home = () => {
       {showMessage && (
         <div className="absolute top-60 left-0 right-0 flex justify-center z-20">
           <div className=" font-bold bg-white bg-opacity-90 text-blue-800 font-marker px-4 py-2 rounded-lg shadow-lg animate-fade-in-out">
-            Puedes girar a los hermanos Cuphead. ¡Intenta girarlos!
+            Puedes girar a los hermanos Cuphead. ¡Intentalo!
           </div>
         </div>
       )}
