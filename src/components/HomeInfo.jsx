@@ -32,7 +32,7 @@ const renderContent = {
     <ExternalLink
       className=" font-marker"
       text="¡Mira cómo es el lugar donde celebraremos mi cumpleaños!"
-      url="https://www.instagram.com/minimotosmedellinrio?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+      url="https://www.instagram.com/granjalaclarita?igsh=MXU5d3d2N3hlaGNyeg%3D%3D"
       btnText="¿Quieres ver el lugar?"
     />
   ),

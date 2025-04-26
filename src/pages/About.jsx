@@ -127,7 +127,7 @@ const About = () => {
 
               <div>
                 <h2 className="text-2xl font-semibold mb-2">Ubicación</h2>
-                <p className="text-lg">Minimotos Medellin Río</p>
+                <p className="text-lg">Granja la Clarita</p>
                 <p className="text-lg">Caldas, Antioquia, Vereda La Clara</p>
               </div>
 
