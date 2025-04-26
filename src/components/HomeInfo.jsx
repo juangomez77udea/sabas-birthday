@@ -22,7 +22,8 @@ const renderContent = {
   1: (
     <h1 className=" font-marker sm:text-xl sm:leading-snug text-center bg-blue-700 relative border rounded-lg border-blue-700 py-4 px-8 shadow-[0.6vmin_0.6vmin_#336cc1,1vmin_1vmin_#0092db,1vmin_1vmin_#0092db,0.65vmin_1vmin_#0092db,1vmin_0.65vmin_#0092db] p-6 text-white mx-5">
       Hola, soy <span className="font-semibold">Sebastian</span> 👋
-      <br />🎉 !Y quiero invitarte a celebrar conmigo mi cumpleaños número 9 ¡ 🎉
+      <br />🎉 !Y quiero invitarte a celebrar conmigo mi cumpleaños número 9 ¡ 
+      <br /> Te espero el Sábado 24 de mayo a las 11 a.m. 🎉
     </h1>
   ),
   2:  <h1 className=" font-marker sm:text-xl sm:leading-snug text-center bg-blue-700 relative border rounded-lg border-blue-700 py-4 px-8 shadow-[0.6vmin_0.6vmin_#336cc1,1vmin_1vmin_#0092db,1vmin_1vmin_#0092db,0.65vmin_1vmin_#0092db,1vmin_0.65vmin_#0092db] p-6 text-white mx-5">"Recuerda <span className=" font-semibold">llevar ropa de cambio</span>, para nuestra aventura."</h1> ,
